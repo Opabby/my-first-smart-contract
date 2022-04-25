@@ -1,19 +1,15 @@
-/**
- * @type import('hardhat/config').HardhatUserConfig
- */
- require('dotenv').config(); //all the key value pairs are being made available due to this lib
- require('@nomiclabs/hardhat-ethers');
+require("@nomiclabs/hardhat-waffle");
+require('dotenv').config();
 
- const {ALCHEMY_API_URL, PRIVATE_KEY} = process.env; //environment variables are being loaded here.
+const PRIVATE_KEY = process.env.PRIVATE_KEY;
+const API_URL = process.env.API_URL;
 
  module.exports = {
-   solidity: "0.8.1",
-   defaultNetwork: 'rinkeby',
+   solidity: "0.8.0",
    networks: {
-     hardhat: {},
      rinkeby: {
-         url: ALCHEMY_API_URL,
-         accounts: [`0x${PRIVATE_KEY}`]
-     }
-   }
+       url: 
+       accounts: [`0x${PRIVATE_KEY}`],
+     },
+   },
  };
