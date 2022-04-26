@@ -17,16 +17,25 @@ contract WavePortal {
 
     Wave[] waves;
 
-    constructor() {
-        console.log("Yo yo, I am a contract and I am smart");
+    constructor()  payable{
+        console.log("Yo yo, we have been constructed!");
     }
 
     function wave(string memory _message) public {
         totalWaves += 1;
         console.log("%s waved w/ message %s", msg.sender, _message);
-        // storing the data in the array
+        
         waves.push(Wave(msg.sender, _message, block.timestamp));
+
         emit NewWave(msg.sender, block.timestamp, _message);
+
+        uint256 prizeAmount = 0.0001 ether;
+        require(
+            prizeAmount <= address(this).balance,
+            "Trying to withdraw more money than the contract has."
+        );
+        (bool success, ) = (msg.sender).call{value: prizeAmount}("");
+        require(success, "Failes to withdraw money from contract.");
     }
 
     // making it easy to retrieve the waves from our website
