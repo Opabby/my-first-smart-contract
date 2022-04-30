@@ -30,9 +30,11 @@ contract WavePortal {
     function wave(string memory _message) public {
 
         require(
-            lastWavedAt[msg.sender] + 15 minutes < block.timestamp,
-            "Wait 15m"
+            lastWavedAt[msg.sender] + 30 seconds < block.timestamp,
+            "Wait 30s"
         );
+
+        lastWavedAt[msg.sender] = block.timestamp;
 
         totalWaves += 1;
         console.log("%s waved w/ message %s", msg.sender, _message);
@@ -40,8 +42,6 @@ contract WavePortal {
         waves.push(Wave(msg.sender, _message, block.timestamp));
 
         seed = (block.difficulty + block.timestamp + seed) % 100;
-
-        console.log("Random # generated: %d", seed);
 
         if (seed <= 50) {
             console.log("%s won!", msg.sender);
@@ -58,7 +58,6 @@ contract WavePortal {
         emit NewWave(msg.sender, block.timestamp, _message);
     }
 
-    // making it easy to retrieve the waves from our website
     function getAllWaves() public view returns (Wave[] memory) {
         return waves;
     }
